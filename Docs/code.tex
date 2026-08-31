@@ -1,0 +1,164 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Core Packages ---
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{helvet}
+\usepackage{microtype}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{amsmath}
+\usepackage{enumitem}
+\usepackage{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue
+}
+
+\setlist[itemize]{noitemsep, topsep=2pt}
+\setlist[enumerate]{noitemsep, topsep=2pt}
+
+% --- Title Information ---
+\title{\textbf{\Large TimeLens AI: A Personalized Time-Prediction and Adaptive Scheduling Engine}\\[0.3em]
+\large Software Engineering Project Proposal}
+\author{
+    \textbf{Vansh Jain} (1024030770) \quad 
+    \textbf{Devyang} (1024030765) \quad 
+    \textbf{Bhavik} (1024030772)\\[0.5em]
+    \small Department of Computer Engineering\\
+    \small Thapar Institute of Engineering and Technology
+}
+\date{August 24, 2026}
+
+\begin{document}
+
+\maketitle
+\hrule
+\vspace{1.5em}
+
+\section{Higher-Order Goal}
+This project aims to enhance personal productivity and temporal literacy by replacing conventional, static task planning with an adaptive, data-driven forecasting architecture. Beyond immediate technical execution, it targets a fundamental systemic issue in productivity software: human time misestimation follows personal, measurable, and systemic patterns. Existing task managers treat user-inputted durations as absolute ground truth, completely ignoring historical behavioral signals.
+
+\section{Problem Statement}
+Current task management platforms function primarily as passive storage systems, relying on user-provided completion estimates without validation. This static operational model fails due to five critical structural flaws:
+\begin{itemize}
+    \item \textbf{Unmitigated Estimation Bias:} Users systematically under- or overestimate durations. Planners fail to track or adjust for these individual, category-specific variance patterns.
+    \item \textbf{Assumption of Uniform Productivity:} Human cognitive output fluctuates based on circadian rhythms, energy reserves, and continuous workload, whereas planners assume static throughput.
+    \item \textbf{Uncaptured Context-Switching Costs:} External interruptions and task switching degrade operational efficiency, yet existing systems fail to factor these delays into future allocations.
+    \item \textbf{Unmodeled Deadline Dynamics:} Dynamic responses to approaching deadlines, ranging from output acceleration to behavioral paralysis, are entirely unaccounted for.
+    \item \textbf{Static Schedule Degradation:} Schedules remain rigid following initial delays, compounding downstream timeline failures rather than adaptively re-balancing workload.
+\end{itemize}
+
+\textit{TimeLens AI} resolves these structural limitations by constructing per-user statistical models that estimate realistic task completion vectors and automatically re-sequence remaining workloads upon data ingestion.
+
+\section{Objectives}
+\begin{itemize}
+    \item Engine construction for personalized task duration estimation localized per user and task category.
+    \item Algorithmic quantification and auto-correction of user-specific estimation bias profiles.
+    \item Modeling time-of-day productivity efficiency and cumulative cognitive workload trends.
+    \item Integration of quantifiable task interruption and context-switch overhead metrics.
+    \item Implementation of a real-time reactive scheduling engine for dynamic workload re-allocation.
+\end{itemize}
+
+\section{Methodology \& Solution Approach}
+
+\subsection{System Architecture \& Pipeline}
+The end-to-end operational pipeline processes tasks through four core sequential phases:
+\begin{enumerate}
+    \item \textbf{Ingestion \& Feature Extraction:} Accepts inputs via Client API Gateway. Computes rolling user-category estimation biases, temporal productivity profiles, interruption metrics, and deadline proximity factors.
+    \item \textbf{Predictive Inference:} Evaluates extracted vectors using a machine learning engine (transitioning from baseline linear models to gradient-boosted regressors as data density scales) to generate predicted completion durations and confidence intervals.
+    \item \textbf{Dynamic Schedule Re-alignment:} Re-sequences and recalibrates open tasks systematically upon trigger events (completion, creation, or delay).
+    \item \textbf{Feedback Loop Persistence:} Commits actual completion metrics to an immutable historical repository, continuously refining parameters.
+\end{enumerate}
+
+\subsection{Key Model Features}
+Features analyzed include: Task Category, Self-Reported Estimate, Historical User-Category Estimation Bias, Start Timestamp (Circadian Vector), Daily Cumulative Workload, Recorded Interruption Volume, and Temporal Distance to Deadline.
+
+\subsection{Personalization \& Cold-Start Strategy}
+Models prioritize individual operational history over global heuristics. For zero-history onboarding, the framework applies a population-level prior, continuously blending and shifting weights toward the personalized statistical model as empirical task data accumulates.
+
+\subsection{Technical Infrastructure}
+\begin{itemize}
+    \item \textbf{Core Services:} RESTful API Architecture with Token-based Authentication.
+    \item \textbf{ML Engine:} \texttt{scikit-learn} / \texttt{XGBoost} gradient-boosted regressor models.
+    \item \textbf{Data Tier:} Relational Store for tasks and history; Feature Store for rolling statistical profiles.
+    \item \textbf{User Interface:} Real-time visualization dashboard tracking historical bias and live schedules.
+\end{itemize}
+
+\section{Evaluation Criteria}
+Target performance is evaluated strictly through quantitative KPIs:
+\begin{itemize}
+    \item \textbf{Prediction Accuracy:} Mean Absolute Error (MAE) between predicted vs. actual durations.
+    \item \textbf{Bias Reduction:} Variance reduction between user estimates and empirical durations post-correction.
+    \item \textbf{Schedule Adherence:} Percentage of tasks executed within the dynamically projected window.
+    \item \textbf{Rebuild Latency:} Execution latency of schedule recalibration upon state change.
+    \item \textbf{Missed-Deadline Reduction:} Metric shift in breached deadlines against baseline.
+\end{itemize}
+
+\textbf{Execution Case Example:} A user estimates $60\text{ mins}$ for a technical report scheduled for the afternoon. Incorporating historical bias and circadian throughput degradation, \textit{TimeLens AI} predicts $95\text{ mins}$, automatically delaying subsequent downstream tasks by $35\text{ mins}$ to maintain schedule integrity.
+
+\section{Scalability \& System Architecture}
+\begin{itemize}
+    \item \textbf{Decoupled Infrastructure:} Ingestion, inference, and scheduling operate as isolated microservices to ensure horizontal scale.
+    \item \textbf{Stateless Execution:} Database optimization through indexed user querying and per-user model training guarantees isolated computational overhead.
+\end{itemize}
+
+\section{Resource Allocation}
+Implementation relies exclusively on open-source frameworks (\texttt{scikit-learn}, relational DBs) and existing university infrastructure, requiring zero external funding.
+
+\section{Project Scope \& Deliverables}
+
+\subsection{Phase 1 Deliverables}
+\begin{itemize}
+    \item Task management and authentication API endpoints.
+    \item Baseline user-category estimation bias correction engine.
+    \item Primary duration prediction endpoint and core telemetry dashboard.
+\end{itemize}
+
+\subsection{Phase 2 Deliverables}
+\begin{itemize}
+    \item Integrated circadian productivity and interruption metrics engine.
+    \item Dynamic schedule rebuilding system with deadline-pressure scaling.
+    \item Automated persistent learning loop and live analytics reporting.
+\end{itemize}
+
+\section{Risk Matrix \& Mitigation Strategies}
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{>{\bfseries}l X}
+\toprule
+Risk Factor & Mitigation Strategy \\
+\midrule
+Cold-Start Anomalies & Initialize with category-level population priors; decay weights exponentially toward personalized model. \\
+Data Overfitting & Cross-validate against recent task splits; regularize small user datasets toward global priors. \\
+Manual Overrides & Log overrides as explicit feedback features; display model confidence intervals. \\
+Data Privacy & Exclude raw task payload content; store only anonymized timestamps, categories, and metrics. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Implementation Timeline}
+\begin{table}[htbp]
+\centering
+\small
+\begin{tabularx}{\textwidth}{c X}
+\toprule
+\textbf{Timeline} & \textbf{Milestone Focus} \\
+\midrule
+Weeks 1 to 2 & Requirements definition, schema specification, authentication and API core setup. \\
+Weeks 3 to 4 & Baseline bias regression implementation and task CRUD operational workflows. \\
+Weeks 5 to 7 & Circadian productivity engine, context-switch metrics, and inference pipeline. \\
+Weeks 8 to 9 & Deadline proximity integration, auto-rebuilder development, and notification engine. \\
+Weeks 10 to 11 & Analytics dashboard implementation, performance tuning, and KPI benchmarking. \\
+Week 12 & Comprehensive integration testing, system hardening, and project defense. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\section{Summary}
+\textit{TimeLens AI} converts task management into an adaptive, data-driven forecasting ecosystem. By quantifying individual operational bias, circadian performance curves, context-switch overhead, and deadline behavior, the platform replaces manual scheduling with dynamic, statistically backed temporal planning evaluated via clear, empirical KPIs.
+
+\end{document}
